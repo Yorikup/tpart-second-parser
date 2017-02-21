@@ -1,0 +1,27 @@
+{
+  "name": "tpartparser",
+  "version": "1.0.0",
+  "description": "nodejs parser for tpart project",
+  "main": "parser.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Yorikup/tpart-second-parser.git"
+  },
+  "keywords": [
+    "nodejs",
+    "parser"
+  ],
+  "author": "Yorik",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Yorikup/tpart-second-parser/issues"
+  },
+  "homepage": "https://github.com/Yorikup/tpart-second-parser#readme",
+  "dependencies": {
+    "cheerio": "^0.22.0",
+    "request": "^2.79.0"
+  }
+}
