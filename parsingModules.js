@@ -1,5 +1,9 @@
 var request = require("request"),
-    cheerio = require("cheerio");
+    cheerio = require("cheerio"),
+    nameSelector = "div.title-indent span",
+    codeSelector = "div.title-indent div span",
+    priceSelector = "span.PricesalesPrice",
+    inStockSelector = "div.product_stock span";
 
 /* tablePart object description */
 var tablePart = function(partName, partCode, partPrice, partInStock) {
@@ -47,9 +51,16 @@ module.exports = {
       request.get(tableUrl, options, function(error, response, body){
         if(!error) {
           var $ = cheerio.load(body, {decodeEntities: false});
-          //console.log(($).html());
           var table = $(stringSelector).html();
-          console.log(table);
+          //console.log(table);
+          partName = $(nameSelector).html();
+          console.log(partName);
+          partCode = $(codeSelector).html();
+          console.log(partCode);
+          partPrice = $(priceSelector).html().trim();
+          console.log(partPrice);
+          partInStock = $(inStockSelector).html();
+          console.log(partInStock);
         } else {
           reject(error);
           console.log("Произошла ошибка: " + error);

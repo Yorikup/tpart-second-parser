@@ -5,7 +5,6 @@ var request = require("request"),
     parsingModules = require("./parsingModules.js"),
 
     stringSelector = "div.row.odd",
-    //stringSelector = "table#content",
     tableUrl = credentials.url;
 
 console.log("\n\n\n\n\n\n\n\n  СТАРТ \n\n");
