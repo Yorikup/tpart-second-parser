@@ -1,5 +1,7 @@
 var request = require("request"),
     cheerio = require("cheerio"),
+    fs = require("fs"),
+
     nameSelector = "div.title-indent span",
     codeSelector = "div.title-indent div span",
     priceSelector = "div#productPrice4063 span",
@@ -39,6 +41,8 @@ tablePart.prototype.setPartInStock = function(partInStock) {
 /* tablePart object description end */
 
 module.exports = {
+
+  /* Function that takes all the parts from the current page and pushes them into tableParts array */
   getTableParts: function(tableUrl, stringSelector) {
     var tableParts = [];
     var options = {
@@ -51,25 +55,31 @@ module.exports = {
       request.get(tableUrl, options, function(error, response, body){
         if(!error) {
           var $ = cheerio.load(body, {decodeEntities: false});
-          var table = $(stringSelector); //.html();
-          //console.log(table);
+          var table = $(stringSelector);
           table.children(".row.odd").each(function(i, div){
-            partName = $(div).find(nameSelector).html();
-            console.log(partName);
-            partCode = $(div).find(codeSelector).html();
-            console.log(partCode);
-            partPrice = $(div).find(priceSelector).html().trim();
-            console.log(partPrice);
+            partName = $(div).find(nameSelector).html().toLowerCase().trim();
+            partCode = $(div).find(codeSelector).html().trim();
+            partPrice = $(div).find(priceSelector).html().trim().replace('&euro;', '');
             partInStock = $(div).find(inStockSelector).html();
-            console.log(partInStock);
-            //console.log($(div).html());
-            console.log("i=" + i);
+            tableParts.push(new tablePart(partName, partCode, partPrice, partInStock));
           });
+          resolve(tableParts);
         } else {
           reject(error);
           console.log("Произошла ошибка: " + error);
         }
       });
+    });
+  },
+
+  /* function that saves an object to a file */
+  savePartsPage: function (object, filename) {
+    fs.writeFile(filename, JSON.stringify(object), function (error) {
+      if (error) {
+       return console.log("Произошла ошибка записи в файл " + filename + ": " + error);
+      } else {
+        console.log("Данные со страницы записаны в файл: " + filename);
+      }
     });
   }
 }

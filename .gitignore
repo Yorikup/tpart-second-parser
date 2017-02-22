@@ -7,3 +7,6 @@ credentials.js
 
 # node.js modules
 node_modules
+
+# output directory
+Pages
