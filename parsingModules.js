@@ -48,7 +48,7 @@ module.exports = {
     var options = {
       headers: {
           'X-Requested-With': 'XMLHttpRequest',
-          'Cookie': 'PHPSESSID=qpu71d78hhkgfluhejvd069m72'
+          'Cookie': 'PHPSESSID=u27lb4o24nv52k8h1bfqdvt1e5'
       }
     };
     return new Promise(function(resolve, reject) {
