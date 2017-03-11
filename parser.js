@@ -34,8 +34,6 @@ function parseTable(pageNumber) {
           db.addItem(code, name, priceEuro, price, available).then(
             answer =>{
               if (counter < (response.length - 1)) {
-                //console.log(counter);
-                //console.log(response.length);
                 counter++;
                 addRowToDB(response, counter);
               } else {
@@ -45,6 +43,7 @@ function parseTable(pageNumber) {
                   parseTable(pageNumber);
                 } else {
                   console.log("\n\n\n\n\n\n\n\n  ПАРСИНГ ОКОНЧЕН!!! \n\n");
+                  process.exit(-1);
                 }
               }
             },
