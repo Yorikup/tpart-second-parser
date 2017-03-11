@@ -23,6 +23,7 @@
   "dependencies": {
     "cheerio": "^0.22.0",
     "fs": "0.0.1-security",
+    "mysql": "^2.13.0",
     "request": "^2.79.0"
   }
 }
