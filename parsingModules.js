@@ -5,18 +5,19 @@ var request = require("request"),
     nameSelector = "div.title-indent span",
     codeSelector = "div.title-indent div span",
     priceSelector = "div#productPrice4063 span",
-    inStockSelector = "div.product_stock span";
+    availableSelector = "div.product_stock span";
 
 /* tablePart object description */
-var tablePart = function(partName, partCode, partPrice, partInStock) {
+var tablePart = function(partName, partCode, partPriceEuro, partPrice, partAvailable) {
   this.name = partName;
   this.code = partCode;
+  this.priceEuro = partPriceEuro;
   this.price = partPrice;
-  this.inStock = partInStock || '0';
+  this.available = partAvailable || '0';
 }
 
 tablePart.prototype.getPart = function() {
-  return {name: this.name, code: this.code, price: this.price, inStock: this.inStock}
+  return {name: this.name, code: this.code, priceEuro: this.priceEuro, price: this.price, available: this.available}
 }
 
 tablePart.prototype.setPartName = function(partName) {
@@ -29,13 +30,18 @@ tablePart.prototype.setPartCode = function(partCode) {
   return true;
 }
 
+tablePart.prototype.setPartPriceEuro = function(partPriceEuro) {
+  this.priceEuro = partPriceEuro;
+  return true;
+}
+
 tablePart.prototype.setPartPrice = function(partPrice) {
   this.price = partPrice;
   return true;
 }
 
-tablePart.prototype.setPartInStock = function(partInStock) {
-  this.inStock = partInStock;
+tablePart.prototype.setPartAvailable = function(partAvailable) {
+  this.available = partAvailable;
   return true;
 }
 /* tablePart object description end */
@@ -48,7 +54,7 @@ module.exports = {
     var options = {
       headers: {
           'X-Requested-With': 'XMLHttpRequest',
-          'Cookie': 'PHPSESSID=u27lb4o24nv52k8h1bfqdvt1e5'
+          'Cookie': 'PHPSESSID=89nhngonsdh392i5sk3hncvuk2'
       }
     };
     return new Promise(function(resolve, reject) {
@@ -59,9 +65,16 @@ module.exports = {
           table.children(".row.odd").each(function(i, div){
             partName = $(div).find(nameSelector).html().toLowerCase().trim();
             partCode = $(div).find(codeSelector).html().trim();
-            partPrice = $(div).find(priceSelector).html().trim().replace('&euro;', '');
-            partInStock = $(div).find(inStockSelector).html();
-            tableParts.push(new tablePart(partName, partCode, partPrice, partInStock));
+            $(div).find(priceSelector).each(function(j, span){
+              if (j == 0) {
+                partPriceEuro = $(span).html().trim().replace('&euro;', '');
+                partPrice = '0.00';
+              } else {
+                partPrice = $(span).html().trim().replace(' руб.', '');
+              }
+            });
+            partAvailable = $(div).find(availableSelector).html();
+            tableParts.push(new tablePart(partName, partCode, partPriceEuro, partPrice, partAvailable));
           });
           resolve(tableParts);
         } else {

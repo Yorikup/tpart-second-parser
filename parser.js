@@ -15,17 +15,15 @@ if( !fs.existsSync('Pages') )
 
 console.log("\n\n\n\n\n\n\n\n  СТАРТ \n\n");
 
-parseTable(1001);
+parseTable(1);
 
 function parseTable(pageNumber) {
-  //console.log(tableUrl + pageNumber);
-  //console.log(stringSelector);
   parsingModules.getTableParts(tableUrl + pageNumber, stringSelector).then(
     response => {
       if(response.length > 0) {
         getContentErrorCounter = 0;
         parsingModules.savePartsPage(response, './Pages/page-' + pageNumber + '.json');
-        if(pageNumber !== 2067){
+        if(pageNumber !== 2){
           pageNumber++;
           parseTable(pageNumber);
         } else {
