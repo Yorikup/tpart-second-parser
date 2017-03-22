@@ -16,7 +16,7 @@ if( !fs.existsSync('Pages') )
 
 console.log("\n\n\n\n\n\n\n\n  СТАРТ \n\n");
 
-parseTable(1);
+parseTable(1396);
 
 function parseTable(pageNumber) {
   parsingModules.getTableParts(tableUrl + pageNumber, stringSelector).then(
@@ -27,7 +27,8 @@ function parseTable(pageNumber) {
         addRowToDB(response, 0);
         function addRowToDB(response, counter){
           code = response[counter].code.toString();
-          name = response[counter].name.replace('&quot;', '\"').replace('\'', '\\\'');
+          name = response[counter].name.replace('&quot;', '\"').replace(/\'/g, '\\\'');
+          //console.log(name);
           priceEuro = response[counter].priceEuro.replace(',', '.').replace('Цены нет', '0.00').replace(' ', '') || '0';
           price = response[counter].price.replace(' ', '');
           available = response[counter].available.trim() || '0';
@@ -38,12 +39,12 @@ function parseTable(pageNumber) {
                 addRowToDB(response, counter);
               } else {
                 console.log("Страница " + pageNumber + " успешно добавлена в базу данных!");
-                if(pageNumber !== 2){
+                if(pageNumber !== 2067){
                   pageNumber++;
                   parseTable(pageNumber);
                 } else {
                   console.log("\n\n\n\n\n\n\n\n  ПАРСИНГ ОКОНЧЕН!!! \n\n");
-                  process.exit(-1);
+                  process.exit(0);
                 }
               }
             },

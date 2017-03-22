@@ -54,7 +54,7 @@ module.exports = {
     var options = {
       headers: {
           'X-Requested-With': 'XMLHttpRequest',
-          'Cookie': 'PHPSESSID=89nhngonsdh392i5sk3hncvuk2'
+          'Cookie': 'PHPSESSID=07mqn99vk4eanriafobh8emmf6'
       }
     };
     return new Promise(function(resolve, reject) {
@@ -67,10 +67,10 @@ module.exports = {
             partCode = $(div).find(codeSelector).html().trim();
             $(div).find(priceSelector).each(function(j, span){
               if (j == 0) {
-                partPriceEuro = $(span).html().trim().replace('&euro;', '');
+                partPriceEuro = $(span).html().trim().replace('&euro;', '').replace(' руб.', '');
                 partPrice = '0.00';
               } else {
-                partPrice = $(span).html().trim().replace(' руб.', '');
+                partPrice = $(span).html().replace('руб.', '').trim();
               }
             });
             partAvailable = $(div).find(availableSelector).html();
